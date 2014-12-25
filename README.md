@@ -51,7 +51,7 @@ System.loadLibrary("HelloImpl");
 
 ```CMake
 gcc -o libHelloImpl.jnilib -lc -shared 
-		-I/System/Library/Frameworks/JavaVM.framework/Headers Hello.c # -> jnilib
+		-I"/System/Library/Frameworks/JavaVM.framework/Headers" Hello.c # -> jnilib
 
 export LD_LIBRARY_PATH=.
 ```

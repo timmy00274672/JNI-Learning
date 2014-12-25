@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "Hello.h"
+#include "com_marakana_jniexamples_Hello.h"
 
-JNIEXPORT void JNICALL Java_Hello_sayHi(JNIEnv *env, jobject obj, jstring who, jint times) {
+JNIEXPORT void JNICALL Java_com_marakana_jniexamples_Hello_sayHi(JNIEnv *env, jobject obj, jstring who, jint times) {
   jint i;
   jboolean iscopy;
   const char *name;

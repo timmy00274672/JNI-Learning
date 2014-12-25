@@ -1,3 +1,5 @@
+package com.marakana.jniexamples;
+
 public class Hello {
   public native void sayHi(String who, int times); //1
 
