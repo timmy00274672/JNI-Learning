@@ -6,9 +6,9 @@ build: src/com/marakana/jniexamples/Hello.java Hello.c prepareDir
 	javah -jni -cp classes/ com.marakana.jniexamples.Hello # -> Hello.h
 	gcc -o libHelloImpl.jnilib -lc -shared \
 		-I/System/Library/Frameworks/JavaVM.framework/Headers Hello.c # -> jnilib
-	export LD_LIBRARY_PATH=.
 
 test: build
+	export LD_LIBRARY_PATH=.
 	java -cp classes com.marakana.jniexamples.Hello Student 5
 
 clean: 
