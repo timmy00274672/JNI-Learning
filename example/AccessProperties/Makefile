@@ -13,4 +13,4 @@ test: InstanceAccess.class libInstanceAccess.jnilib
 	java InstanceAccess
 
 clean: 
-	rm InstanceAccess.class InstanceAccess.h libHelloImpl.jnilib
+	rm InstanceAccess.class InstanceAccess.h libInstanceAccess.jnilib
