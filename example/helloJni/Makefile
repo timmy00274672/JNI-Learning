@@ -1,15 +1,16 @@
-prepareDir:
+JAVA_HOME = /usr/lib/jvm/java-8-oracle
+
+Hello.java = src/com/marakana/jniexamples/Hello.java
+Hello.class = com.marakana.jniexamples.Hello
+
+demo: $(Hello.java) Hello.c
 	mkdir -p classes
+	javac $(Hello.java) -d classes
+	javah -cp classes $(Hello.class)
+	gcc -shared -lc -fPIC -o libHelloImpl.so \
+		-I $(JAVA_HOME)/include \
+		-I $(JAVA_HOME)/include/linux/ \
+		Hello.c
+	java -DLD_LIBRARY_PATH=. -cp classes $(Hello.class) Tim 3
 
-build: src/com/marakana/jniexamples/Hello.java Hello.c prepareDir
-	javac -d classes/ src/com/marakana/jniexamples/Hello.java # -> Hello.class
-	javah -jni -cp classes/ com.marakana.jniexamples.Hello # -> Hello.h
-	gcc -o libHelloImpl.jnilib -lc -shared \
-		-I/System/Library/Frameworks/JavaVM.framework/Headers Hello.c # -> jnilib
-
-test: build
-	export LD_LIBRARY_PATH=.
-	java -cp classes com.marakana.jniexamples.Hello Student 5
-
-clean: 
-	rm -r classes Hello.class com_marakana_jniexamples_Hello.h *.jnilib 2>/dev/null
+	

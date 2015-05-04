@@ -1,19 +1,10 @@
-prepareDir:
-	mkdir -p classes
+JAVA_HOME = /usr/lib/jvm/java-8-oracle
 
-GetHello.class: GetHello.java
-	javac $<
-
-GetHello.h: GetHello.class
-	javah -jni GetHello
-
-libHelloImpl.jnilib: GetHello.c GetHello.h
-	gcc -o $@ -lc -shared \
-		-I/System/Library/Frameworks/JavaVM.framework/Headers $<
-
-test: GetHello.class libHelloImpl.jnilib
-	export LD_LIBRARY_PATH=.
-	java GetHello
-
-clean: 
-	rm GetHello.class GetHello.h libHelloImpl.jnilib
+demo: GetHello.java GetHello.c
+	javac GetHello.java
+	javah GetHello
+	gcc -shared -lc -fPIC -o libHelloImpl.so \
+		-I $(JAVA_HOME)/include \
+		-I $(JAVA_HOME)/include/linux/ \
+		GetHello.c
+	java -DLD_LIBRARY_PATH=. GetHello

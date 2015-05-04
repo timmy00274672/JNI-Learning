@@ -1,17 +1,10 @@
+JAVA_HOME = /usr/lib/jvm/java-8-oracle
 
-ExceptionInNative.class: ExceptionInNative.java
-	javac $<
-
-ExceptionInNative.h: ExceptionInNative.class
-	javah -jni ExceptionInNative
-
-libThrowException.jnilib: ExceptionInNative.c ExceptionInNative.h
-	gcc -o $@ -lc -shared \
-		-I/System/Library/Frameworks/JavaVM.framework/Headers $<
-
-test: ExceptionInNative.class libThrowException.jnilib
-	export LD_LIBRARY_PATH=.
-	java ExceptionInNative
-
-clean: 
-	rm ExceptionInNative.class ExceptionInNative.h ExceptionInNative.jnilib
+demo: ExceptionInNative.java ExceptionInNative.c
+	javac ExceptionInNative.java
+	javah ExceptionInNative
+	gcc -shared -lc -fPIC -o libThrowException.so \
+		-I $(JAVA_HOME)/include \
+		-I $(JAVA_HOME)/include/linux/ \
+		ExceptionInNative.c
+	java -DLD_LIBRARY_PATH=. ExceptionInNative

@@ -1,16 +1,10 @@
-InstanceAccess.class: InstanceAccess.java
-	javac $<
+JAVA_HOME = /usr/lib/jvm/java-8-oracle
 
-InstanceAccess.h: InstanceAccess.class
-	javah -jni InstanceAccess
-
-libInstanceAccess.jnilib: InstanceAccess.c InstanceAccess.h
-	gcc -o $@ -lc -shared \
-		-I/System/Library/Frameworks/JavaVM.framework/Headers $<
-
-test: InstanceAccess.class libInstanceAccess.jnilib
-	export LD_LIBRARY_PATH=.
-	java InstanceAccess
-
-clean: 
-	rm InstanceAccess.class InstanceAccess.h libInstanceAccess.jnilib
+demo: InstanceAccess.java InstanceAccess.c
+	javac InstanceAccess.java
+	javah InstanceAccess
+	gcc -shared -lc -fPIC -o libInstanceAccess.so \
+		-I $(JAVA_HOME)/include \
+		-I $(JAVA_HOME)/include/linux/ \
+		InstanceAccess.c
+	java -DLD_LIBRARY_PATH=. InstanceAccess
